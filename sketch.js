@@ -59,10 +59,8 @@ function setup() {
             const y = column * squareSize + randomOffsetVertical;
 
             //calculate width and height
-            // const width = squareSize + randomOffsetWidth;
-            // const height = squareSize + randomOffsetHeight;
-            const width = random(squareSize);
-            const height = random(squareSize);
+            const width = squareSize + randomOffsetWidth;
+            const height = squareSize + randomOffsetHeight;
 
             // image(background, x position, y position, width, height)
             //will draw an image the given background at the given position and width / height
