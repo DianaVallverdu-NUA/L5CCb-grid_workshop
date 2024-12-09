@@ -1,76 +1,65 @@
+const canvasSize = 500;
+const squaresPerSide = 10;
+const squareSide = canvasSize / squaresPerSide;
 
-//list of textures that can fill the grid
-const textures = [];
+//offset of squares
+const offsetRange = 10;
+
+//create 4 variables for images
+let textureOne;
+let textureTwo;
+let textureThree;
+let textureFour;
+
+let textures;
 
 function preload() {
-
-    // loop through the 4 textures that we have saved
-    for(let textureNumber = 1; textureNumber <= 4; textureNumber++){
-        // get the path of the current texture
-        const pathToTexture = 'Textures/texture-trans' + textureNumber + '.png';
-        //load the image using the loadImage p5.js function and add it to the textures list
-        textures.push(loadImage(pathToTexture));
-    }
-
+  //load each image
+  textureOne = loadImage("Textures/texture-trans1.png");
+  textureTwo = loadImage("Textures/texture-trans2.png");
+  textureThree = loadImage("Textures/texture-trans3.png");
+  textureFour = loadImage("Textures/texture-trans4.png");
 }
 
 function setup() {
+  createCanvas(canvasSize, canvasSize);
 
-    //size of each square in pixels
-    const squareSize = 50;
-    //number of cells of the grid
-    const cellNumber = 10;
-    // canvas size in pixels
-    const canvasSize = squareSize * cellNumber;
-    //maximum offset
-    const maxOffsetPosition = 2;
-    const maxOffsetSize = 5;
+  //prevent draw from re executing continuously
+  noLoop();
 
-    createCanvas(canvasSize, canvasSize);
-    background(220);
+  //add all textures to one array
+  textures = [textureOne, textureTwo, textureThree, textureFour];
+}
 
-    for(let row = 0; row < cellNumber; row++) {
-        for(let column = 0; column < cellNumber; column++) {
-            const red = random(255);
-            const green = random(255);
-            const blue = random(255);
+function draw() {
+  background(220);
 
-            const myColor = color(red, green, blue);
+  //nested loop through columns & rows
+  for(let column = 0; column < squaresPerSide; column = column + 1) {
+    for(let row = 0; row < squaresPerSide; row = row + 1) {
 
-            // get a random texture
-            const texture = random(textures);
+      //select a random texture from the textures array
+      const randomTexture = random(textures);
 
-            // use fill to fill all the square with one color
-            // fill(myColor)
+      //calculate random colour
+      const r = random(0, 255);
+      const g = random(0, 255);
+      const b = random(0, 255);
 
-            // tint the square
-            tint(myColor)
+      //apply the colour "pick up brush"
+      tint(r, g, b);
 
-            //calculate random offset for position
-            const randomOffsetHorizontal = random(-maxOffsetPosition, maxOffsetPosition);
-            const randomOffsetVertical = random(-maxOffsetPosition, maxOffsetPosition);
+      //calculate offset for x and y (random between - offsetRange to + offsetRange)
+      const offsetX = random(-offsetRange, offsetRange);
+      const offsetY = random(-offsetRange, offsetRange);
 
-            //calculate random offset for size
-            const randomOffsetWidth = random(-maxOffsetSize, maxOffsetSize);
-            const randomOffsetHeight = random(-maxOffsetSize, maxOffsetSize);
+      //calculate x and y for each column and row position
+      const x = squareSide * column + offsetX;
+      const y = squareSide * row + offsetY;
 
-            //calculate horizontal and vertical position in pixels
-            const x = row * squareSize + randomOffsetHorizontal;
-            const y = column * squareSize + randomOffsetVertical;
-
-            //calculate width and height
-            const width = squareSize + randomOffsetWidth;
-            const height = squareSize + randomOffsetHeight;
-
-            // image(background, x position, y position, width, height)
-            //will draw an image the given background at the given position and width / height
-            image(texture, x, y, width, height)
-
-            // square(x, y, s) 
-            // x = position of the left of the square
-            // y = position of the top of the square
-            // s = size of the side of the square
-            // square(x, y, squareSize);
-        }
+      //draw the square
+      // square(x, y, squareSide);
+      image(randomTexture, x, y, squareSide, squareSide);
     }
+  }
 }
